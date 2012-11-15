@@ -1,0 +1,5 @@
+#!/bin/sh
+
+SWANK_PORT=4005
+WEBLOCKS_PORT=5555
+sbcl --userinit tests-server.sbclrc  $WEBLOCKS_PORT $SWANK_PORT

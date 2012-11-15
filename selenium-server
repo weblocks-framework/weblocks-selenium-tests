@@ -1,0 +1,3 @@
+SELENIUM_DIR="misc"
+echo $SELENIUM_DIR
+java -jar  "$SELENIUM_DIR/selenium-server-standalone-2.26.0.jar"  -Dwebdriver.chrome.driver="$SELENIUM_DIR/chromedriver"  -Dwebdriver.chrome.switches="--disable-web-security" #-firefoxProfileTemplate "$SELENIUM_DIR/selenium-firefox-profile"

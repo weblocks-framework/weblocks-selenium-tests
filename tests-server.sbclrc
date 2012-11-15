@@ -1,0 +1,24 @@
+(require :sb-posix)
+(defvar *port* (parse-integer (nth 1 *posix-argv*)))
+(defvar *swank-port* (parse-integer (nth 2 *posix-argv*)))
+(load ".quicklisp/setup.lisp")
+(require :weblocks-selenium-tests)
+(weblocks-selenium-tests-app:start-weblocks-selenium-tests-app :port *port*)
+
+(when (interactive-stream-p *terminal-io*)
+ (require :sb-aclrepl)
+ (require :linedit)
+ (funcall (intern "INSTALL-REPL" :linedit) :wrap-current t))
+
+(swank:create-server :dont-close t)
+
+(format t "~C[2J~%" #\Esc)
+
+(format t "Welcome to weblocks~%")
+(format t "Weblocks is running on port ~S, and can be access by browsing http://me:~S~%" *port* *port*)
+(format t "Please update your hosts file apropriately (add alias \"me\" for 127.0.0.1)~%")
+(format t "Swank is running on port ~S~%" *swank-port*)
+(format t "Use (quit) to exit REPL")
+
+(in-package :weblocks-selenium-tests)
+(defun quit () (sb-ext:quit))

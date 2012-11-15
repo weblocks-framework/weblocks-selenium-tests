@@ -1,5 +1,6 @@
 ;;;; package.lisp
 
 (defpackage #:weblocks-selenium-tests
-  (:use #:cl))
+  (:use #:cl #:stefil #:selenium)
+  (:export :all-tests))
 

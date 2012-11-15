@@ -6,7 +6,7 @@
 		#:set-cookie #:set-cookie* #:cookie-in
 		#:user-agent #:referer)
   (:documentation
-   "A web application based on Weblocks."))
+   "A web app based on Weblocks with weblocks components demonstrations."))
 
 (in-package :weblocks-selenium-tests-app)
 

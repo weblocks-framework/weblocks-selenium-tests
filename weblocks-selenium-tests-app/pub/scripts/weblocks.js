@@ -90,10 +90,6 @@ function execJsonCalls (calls) {
     }
 }
 
-function onActionFailure() {
-    alert('Oops, we could not complete your request because of an internal error.');
-}
-
 function getActionUrl(actionCode, sessionString, isPure) {
     if (!sessionString) sessionString = "";
     var scriptName = location.protocol + "//"
@@ -282,3 +278,9 @@ function updateWidgetStateFromHash() {
     initiateActionWithArgs(null, null, {'weblocks-internal-location-hash':hash}, "GET", "/");
 }
 
+function onActionFailure(transport) {
+    document.body.innerHTML=
+	'<div style="text-align: left">' +
+	transport.responseText
+	+ '</div>';
+}
