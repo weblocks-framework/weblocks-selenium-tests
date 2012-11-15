@@ -2,7 +2,7 @@
 
 (asdf:defsystem #:weblocks-selenium-tests
  :serial t
- :description "Describe weblocks-selenium-tests here"
+ :description "Selenium tests suite for weblocks"
  :author "Olexiy Zamkoviy <olexiy.z@gmail.com>"
  :license "LLGPL"
  :depends-on (#:stefil #:selenium #:weblocks-selenium-tests-app)
