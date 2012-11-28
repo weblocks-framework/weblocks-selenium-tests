@@ -18,10 +18,24 @@
                       :upload-directory (get-upload-directory)
                       :file-name :unique))))))
 
+(defun dialog-demonstration-action (&rest args)
+  (let* ((widget))
+    (setf widget (make-instance 'composite 
+                                :widgets 
+                                (list 
+                                  "Some dialog content"
+                                  (lambda (&rest args)
+                                    (render-link (lambda (&rest args)
+                                                   (answer widget t))
+                                                 "Close dialog")))))
+    (do-dialog "Dialog title" widget)))
+
 ;; Define callback function to initialize new sessions
 (defun init-user-session (root)
   (setf (widget-children root)
-	(list (lambda (&rest args)
-		(with-html
-          (render-link #'file-field-demonstration-action "File field form presentation"))))))
+        (list (lambda (&rest args)
+                (with-html
+                  (:ul
+                    (:li (render-link #'file-field-demonstration-action "File field form presentation")) 
+                    (:li (render-link #'dialog-demonstration-action "Dialog sample"))))))))
 
