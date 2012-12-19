@@ -13,6 +13,10 @@
            ,@body) 
          (do-test-complete)))))
 
+(defmacro with-new-or-existing-selenium-session-on-jquery-site (&body body)
+  `(let ((*site-url* *jquery-site-url*))
+     (with-new-or-existing-selenium-session ,@body)))
+
 (defun browser-is-firefox-p ()
   (string= *selenium-browser* *selenium-firefox-browser*))
 

@@ -8,6 +8,12 @@
 
 (defsuite* all-tests)
 
+(defmacro def-test-suite (name-or-name-with-args &optional args &body body)
+  "Defines test suite inside of all-tests suite"
+  `(progn 
+     (in-suite all-tests)
+     (stefil:defsuite* ,name-or-name-with-args ,args ,@body)))
+
 (deftest uploads-file ()
   (require-firefox
     (let ((old-files-list (cl-fad:list-directory (weblocks-selenium-tests-app::get-upload-directory)))

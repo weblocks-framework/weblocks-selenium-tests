@@ -5,6 +5,7 @@
   (:import-from :hunchentoot #:header-in
 		#:set-cookie #:set-cookie* #:cookie-in
 		#:user-agent #:referer)
+  (:export :define-demo-action)
   (:documentation
    "A web app based on Weblocks with weblocks components demonstrations."))
 
@@ -16,12 +17,26 @@
 
 (defwebapp weblocks-selenium-tests-app
     :prefix "/"
-    :description "weblocks-selenium-tests-app: A new application"
-    :init-user-session 'weblocks-selenium-tests-app::init-user-session
+    :description "An app with weblocks components demonstrations using default prototype javascript layer."
+    :init-user-session 'weblocks-selenium-tests-app::init-user-session-prototype
     :autostart nil                   ;; have to start the app manually
     :ignore-default-dependencies nil ;; accept the defaults
-    :debug t
-    )
+    :debug t)
+
+(defwebapp weblocks-with-jquery-selenium-tests-app
+           :prefix "/jquery"
+           :description "An app with weblocks components demonstrations using jquery javascript layer."
+           :init-user-session 'weblocks-selenium-tests-app::init-user-session-jquery
+           :autostart nil                   ;; have to start the app manually
+           :ignore-default-dependencies t ;; accept the defaults
+           :debug t
+           :dependencies (list 
+                           (make-instance 'script-dependency :url "/pub/scripts/jquery-1.8.2.js")
+                           (make-instance 'stylesheet-dependency :url "/pub/stylesheets/main.css")
+                           (make-instance 'stylesheet-dependency :url "/pub/stylesheets/layout.css")
+                           (make-instance 'script-dependency :url "/pub/scripts/weblocks-jquery.js")
+                           (make-instance 'script-dependency :url "/pub/scripts/dialog-jquery.js")
+                           (make-instance 'script-dependency :url "/pub/scripts/jquery-seq.js")))
 
 ;; Top level start & stop scripts
 
@@ -29,7 +44,8 @@
   "Starts the application by calling 'start-weblocks' with appropriate
 arguments."
   (apply #'start-weblocks args)
-  (start-webapp 'weblocks-selenium-tests-app))
+  (start-webapp 'weblocks-selenium-tests-app)
+  (start-webapp 'weblocks-with-jquery-selenium-tests-app))
 
 (defun stop-weblocks-selenium-tests-app ()
   "Stops the application by calling 'stop-weblocks'."

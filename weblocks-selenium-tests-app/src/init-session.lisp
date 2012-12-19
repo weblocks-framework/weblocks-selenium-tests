@@ -1,5 +1,6 @@
 
 (in-package :weblocks-selenium-tests-app)
+(defvar *demo-actions* nil)
 
 (defun get-upload-directory ()
   (merge-pathnames 
@@ -30,12 +31,33 @@
                                                  "Close dialog")))))
     (do-dialog "Dialog title" widget)))
 
+(defun define-demo-action (link-name action &key (prototype-engine-p t) (jquery-engine-p t))
+  "Used to add action to demo list, 
+   :prototype-engine-p and :jquery-engine-p keys 
+   are responsive for displaying action in one or both demo applications"
+  (push (list link-name action prototype-engine-p jquery-engine-p) *demo-actions*))
+
+(define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
+(define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
+
 ;; Define callback function to initialize new sessions
-(defun init-user-session (root)
+(defun init-user-session-prototype (root)
   (setf (widget-children root)
         (list (lambda (&rest args)
                 (with-html
                   (:ul
-                    (:li (render-link #'file-field-demonstration-action "File field form presentation")) 
-                    (:li (render-link #'dialog-demonstration-action "Dialog sample"))))))))
+                    (loop for (link-title action display-for-prototype display-for-jquery) in (reverse *demo-actions*)
+                          if display-for-prototype
+                          do
+                          (cl-who:htm (:li (render-link action link-title))))))))))
+
+(defun init-user-session-jquery (root)
+  (setf (widget-children root)
+        (list (lambda (&rest args)
+                (with-html
+                  (:ul
+                    (loop for (link-title action display-for-prototype display-for-jquery) in (reverse *demo-actions*) 
+                          if display-for-jquery
+                          do
+                          (cl-who:htm (:li (render-link action link-title))))))))))
 
