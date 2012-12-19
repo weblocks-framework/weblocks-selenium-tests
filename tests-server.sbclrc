@@ -3,9 +3,9 @@
 (defvar *swank-port* (parse-integer (nth 2 *posix-argv*)))
 (load ".quicklisp/setup.lisp")
 (require :cl-ppcre)
+(require :weblocks-selenium-tests)
 (loop for i in (cl-ppcre:split " " (string-trim " " (nth 3 *posix-argv*))) do 
  (require (intern (string-upcase i) "KEYWORD")))
-(require :weblocks-selenium-tests)
 
 (weblocks-selenium-tests-app:start-weblocks-selenium-tests-app :port *port*)
 
