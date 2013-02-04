@@ -9,5 +9,6 @@
     :*in-selenium-session* :*selenium-browser* 
     :with-new-or-existing-selenium-session 
     :with-new-or-existing-selenium-session-on-jquery-site 
-    :require-firefox))
+    :require-firefox 
+    :require-google-chrome))
 

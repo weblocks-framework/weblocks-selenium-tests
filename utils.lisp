@@ -20,7 +20,15 @@
 (defun browser-is-firefox-p ()
   (string= *selenium-browser* *selenium-firefox-browser*))
 
+(defun browser-is-google-chrome-p ()
+  (string= *selenium-browser* *selenium-google-chrome-browser*))
+
 (defmacro require-firefox (&body body)
   `(if (browser-is-firefox-p)
      (progn ,@body)
      (warn "Skipping test, browser is not firefox")))
+
+(defmacro require-google-chrome (&body body)
+  `(if (browser-is-google-chrome-p)
+     (progn ,@body)
+     (warn "Skipping test, browser is not google-chrome")))
