@@ -46,3 +46,18 @@
     (do-open-and-wait *site-url*)
     (sample-dialog-assertions)
     (do-click-and-wait "link=Close dialog")))
+
+(deftest selects-child-navigation-properly ()
+  (with-new-or-existing-selenium-session 
+    (do-click-and-wait "link=Navigation sample")
+    (do-click-and-wait "link=Fourth pane (second nested pane)")
+    (do-click-and-wait "link=First pane")
+    (do-click-and-wait "link=Fourth pane (second nested pane)") 
+    (ensure-jquery-loaded-into-document)
+    (is (string= 
+          "true"
+          (do-get-eval 
+            (ps:ps 
+              (ps:chain 
+                (window.j-query "#second-level-nav-2 li:first")
+                (has-class "selected-item"))))))))

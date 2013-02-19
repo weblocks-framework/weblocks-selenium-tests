@@ -4,7 +4,7 @@
  :serial t
  :description "Selenium tests suite for weblocks"
  :author "Olexiy Zamkoviy <olexiy.z@gmail.com>"
- :version "0.2.0"
+ :version "0.2.1"
  :license "LLGPL"
  :depends-on (#:stefil #:selenium #:weblocks-selenium-tests-app)
  :components 

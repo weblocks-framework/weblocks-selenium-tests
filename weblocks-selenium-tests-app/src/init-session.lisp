@@ -31,6 +31,46 @@
                                                  "Close dialog")))))
     (do-dialog "Dialog title" widget)))
 
+(defun navigation-demonstration-action (&rest args)
+  (let ((widget)
+        (navigation))
+    (setf navigation (make-navigation 
+                       "toplevel-nav"
+                       (list "First pane" (make-widget "First pane value") nil)
+                       (list "Second pane" (make-widget "Second pane value") "second-pane")
+                       (list "Third pane (first nested pane)" 
+                             (make-navigation 
+                               "second-level-nav-1"
+                               (list "First nested pane" (make-widget "First nested pane") nil)
+                               (list "Second nested pane" (make-widget "Second nested pane") "second-nested-pane")
+                               (list "Third nested pane (with 2-level nesting)" 
+                                     (make-navigation 
+                                       "third-level-nav" 
+                                       (list "First nested pane" (make-widget "First nested pane") nil)
+                                       (list "Second nested pane" (make-widget "Second nested pane") "second-nested-pane"))
+                                     "third-nested-pane")) "third-pane")
+                       (list "Fourth pane (second nested pane)" 
+                             (make-navigation 
+                               "second-level-nav-2"
+                               (list "First nested pane" (make-widget "First nested pane"))
+                               (list "Second nested pane" (make-widget "Second nested pane") "second-nested-pane")) "fourth-pane")
+                       (list "Fifth pane" (make-widget "Fifth pane") "fifth-pane")
+                       (list "Sixth pane (third nested pane)" 
+                             (make-navigation 
+                               "second-level-nav-3"
+                               (list "First nested pane" (make-widget "First nested pane"))
+                               (list "Second nested pane" (make-widget "Second nested pane") "second-nested-pane")) "sixth-pane")))
+    (setf widget 
+          (make-instance 'composite 
+                         :widgets (list 
+                                    navigation
+                                    (lambda (&rest args)
+                                      (with-html 
+                                        (:div :style "clear:both"
+                                          (render-link (lambda (&rest args)
+                                                     (answer widget t)) "back")))))))
+    (do-page widget)))
+
 (defun define-demo-action (link-name action &key (prototype-engine-p t) (jquery-engine-p t))
   "Used to add action to demo list, 
    :prototype-engine-p and :jquery-engine-p keys 
@@ -39,6 +79,7 @@
 
 (define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
+(define-demo-action "Navigation sample" #'navigation-demonstration-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)

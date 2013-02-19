@@ -270,3 +270,11 @@ div.empty p span.caption
   color:gray;
 }
 
+#toplevel-nav .menu {
+  float:left;
+}
+
+#toplevel-nav .navigation-body {
+  float: left;
+  padding-left: 10px;
+}

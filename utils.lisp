@@ -32,3 +32,20 @@
   `(if (browser-is-google-chrome-p)
      (progn ,@body)
      (warn "Skipping test, browser is not google-chrome")))
+
+(defun ensure-jquery-loaded-into-document ()
+  (do-get-eval 
+    (remove #\Newline (format nil "
+                              function addJavascript(jsname,pos, callback){
+                              var th = window.document.getElementsByTagName(pos)[0];
+                              var s = window.document.createElement('script');
+                              s.setAttribute('type','text/javascript');
+                              s.setAttribute('src',jsname);
+                              s.onload = callback; 
+                              th.appendChild(s);
+                              }
+
+                              addJavascript('~Apub/scripts/jquery-1.8.2.js', 'body', function(){
+                                            window.jQuery.noConflict();
+                                            }); " *site-root-url*)))
+  (sleep 1))
