@@ -104,7 +104,8 @@
 
 (defun render-apps-list ()
   (let* ((uri-path (request-uri-path))
-         (urls (mapcar #'weblocks::weblocks-webapp-prefix weblocks::*active-webapps*)))
+         (urls (mapcar #'weblocks::weblocks-webapp-prefix weblocks::*active-webapps*))
+         (apps (copy-list weblocks::*active-webapps*)))
     (when (find uri-path urls :test #'string=)
       (flet ((current-webapp-p (i)
                (string= 
@@ -113,7 +114,7 @@
         (with-html 
         (:div :style "position:fixed;top:20px;right:20px;background:white;border:3px solid #001D23;text-align:left;"
          (:ul
-           (loop for i in weblocks::*active-webapps* do 
+           (loop for i in (sort apps #'string> :key #'weblocks::weblocks-webapp-description) do 
                  (cl-who:htm 
                    (:li (:a :style (if (current-webapp-p i) "font-weight:bold;" "") :href (weblocks::weblocks-webapp-prefix i) 
                          (str (weblocks::weblocks-webapp-description i)))))))))))))
