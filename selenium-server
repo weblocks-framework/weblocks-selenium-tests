@@ -1,3 +1,6 @@
 SELENIUM_DIR="misc"
 echo $SELENIUM_DIR
+if [ \! -f "$SELENIUM_DIR/selenium-server-standalone-2.26.0.jar" ]; then 
+    (cd "$SELENIUM_DIR" && wget "http://selenium.googlecode.com/files/selenium-server-standalone-2.26.0.jar")
+fi
 java -jar  "$SELENIUM_DIR/selenium-server-standalone-2.26.0.jar"  -Dwebdriver.chrome.driver="$SELENIUM_DIR/chromedriver"  -Dwebdriver.chrome.switches="--disable-web-security" #-firefoxProfileTemplate "$SELENIUM_DIR/selenium-firefox-profile"
