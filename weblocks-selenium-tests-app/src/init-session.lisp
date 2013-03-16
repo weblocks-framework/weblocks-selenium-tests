@@ -113,10 +113,10 @@
                  (string-right-trim "/" uri-path))))
         (with-html 
         (:div :style "position:fixed;top:20px;right:20px;background:white;border:3px solid #001D23;text-align:left;"
-         (:ul
+         (:ul :style "padding:10px 30px;margin:0;"
            (loop for i in (sort apps #'string> :key #'weblocks::weblocks-webapp-description) do 
                  (cl-who:htm 
-                   (:li (:a :style (if (current-webapp-p i) "font-weight:bold;" "") :href (weblocks::weblocks-webapp-prefix i) 
+                   (:li (:a :style (format nil "font-size: 15px;text-decoration:none;~A" (if (current-webapp-p i) "font-weight:bold;" "")) :href (weblocks::weblocks-webapp-prefix i) 
                          (str (weblocks::weblocks-webapp-description i)))))))))))))
 
 (defmethod render-page-body :after ((app weblocks-selenium-tests-app) body-string)

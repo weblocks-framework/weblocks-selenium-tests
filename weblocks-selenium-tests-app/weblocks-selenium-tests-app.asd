@@ -6,7 +6,7 @@
 
 (defsystem weblocks-selenium-tests-app
     :name "weblocks-selenium-tests-app"
-    :version "0.0.3"
+    :version (:read-file-from "version.lisp-expr")
     :maintainer "Olexiy Zamkoviy"
     :author "Olexiy Zamkoviy"
     :licence "LLGPL"
