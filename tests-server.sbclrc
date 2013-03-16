@@ -15,7 +15,7 @@
 
 (when (interactive-stream-p *terminal-io*)
  (require :sb-aclrepl)
- (require :linedit)
+ (ql:quickload :linedit)
  (funcall (intern "INSTALL-REPL" :linedit) :wrap-current t))
 
 (swank:create-server :dont-close t)
