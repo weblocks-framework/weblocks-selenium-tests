@@ -7,9 +7,10 @@ fi
 if [ -f "$SELENIUM_DIR/chromedriver" ]; then
   java -jar "$SELENIUM_DIR/selenium-server-standalone-2.26.0.jar"  -Dwebdriver.chrome.driver="$SELENIUM_DIR/chromedriver"  -Dwebdriver.chrome.switches="--disable-web-security" 
 else 
-  echo "!!! Starting without chromedriver support, 
+  echo -e "\033[31m!!! Starting without chromedriver support, 
 !!! for google-chrome browser support go to http://code.google.com/p/chromedriver/, 
 !!! download release and put chromedriver into misc/ directory. 
-!!! After that restart $0"
+!!! After that restart $0 \e[00m"
+  echo ""
   java -jar "$SELENIUM_DIR/selenium-server-standalone-2.26.0.jar"
 fi
