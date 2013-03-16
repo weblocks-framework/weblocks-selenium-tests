@@ -17,7 +17,7 @@
 
 (defwebapp weblocks-selenium-tests-app
     :prefix "/"
-    :description "An app with weblocks components demonstrations using default prototype javascript layer."
+    :description "Weblocks with prototype demo"
     :init-user-session 'weblocks-selenium-tests-app::init-user-session-prototype
     :autostart nil                   ;; have to start the app manually
     :ignore-default-dependencies nil ;; accept the defaults
@@ -25,7 +25,7 @@
 
 (defwebapp weblocks-with-jquery-selenium-tests-app
            :prefix "/jquery"
-           :description "An app with weblocks components demonstrations using jquery javascript layer."
+           :description "Weblocks with jquery demo"
            :init-user-session 'weblocks-selenium-tests-app::init-user-session-jquery
            :autostart nil                   ;; have to start the app manually
            :ignore-default-dependencies t ;; accept the defaults

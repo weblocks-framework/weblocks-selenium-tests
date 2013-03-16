@@ -1,13 +1,15 @@
 (load ".quicklisp-install/require-quicklisp.lisp")
+(push (make-pathname :directory '(:relative "weblocks-selenium-tests-app")) asdf:*central-registry*)
 (require :sb-posix)
 (setf sb-impl::*default-external-format* :utf-8)
 (defvar *port* (parse-integer (nth 1 *posix-argv*)))
 (defvar *swank-port* (parse-integer (nth 2 *posix-argv*)))
 (load ".quicklisp/setup.lisp")
-(require :cl-ppcre)
-(require :weblocks-selenium-tests)
+(ql:quickload :cl-ppcre)
+(ql:quickload :weblocks-selenium-tests-app)
+(ql:quickload :weblocks-selenium-tests)
 (loop for i in (cl-ppcre:split " " (string-trim " " (nth 3 *posix-argv*))) do 
- (require (intern (string-upcase i) "KEYWORD")))
+ (ql:quickload (intern (string-upcase i) "KEYWORD")))
 
 (weblocks-selenium-tests-app:start-weblocks-selenium-tests-app :port *port*)
 

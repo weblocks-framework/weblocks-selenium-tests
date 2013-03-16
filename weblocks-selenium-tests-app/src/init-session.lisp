@@ -102,3 +102,25 @@
                           do
                           (cl-who:htm (:li (render-link action link-title))))))))))
 
+(defun render-apps-list ()
+  (let* ((uri-path (request-uri-path))
+         (urls (mapcar #'weblocks::weblocks-webapp-prefix weblocks::*active-webapps*)))
+    (when (find uri-path urls :test #'string=)
+      (flet ((current-webapp-p (i)
+               (string= 
+                 (string-right-trim "/" (weblocks::weblocks-webapp-prefix i)) 
+                 (string-right-trim "/" uri-path))))
+        (with-html 
+        (:div :style "position:fixed;top:20px;right:20px;background:white;border:3px solid #001D23;text-align:left;"
+         (:ul
+           (loop for i in weblocks::*active-webapps* do 
+                 (cl-who:htm 
+                   (:li (:a :style (if (current-webapp-p i) "font-weight:bold;" "") :href (weblocks::weblocks-webapp-prefix i) 
+                         (str (weblocks::weblocks-webapp-description i)))))))))))))
+
+(defmethod render-page-body :after ((app weblocks-selenium-tests-app) body-string)
+  (render-apps-list))
+
+(defmethod render-page-body :after ((app weblocks-with-jquery-selenium-tests-app) body-string)
+  (render-apps-list))
+
