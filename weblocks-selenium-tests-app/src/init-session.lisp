@@ -77,9 +77,20 @@
    are responsive for displaying action in one or both demo applications"
   (push (list link-name action prototype-engine-p jquery-engine-p) *demo-actions*))
 
+(defun float-input-field-demonstration-action (&rest args)
+  (do-page 
+    (make-quickform 
+      (defview 
+        nil 
+        (:caption "Input with float value parser demo" :type form :persistp nil :enctype "multipart/form-data" :use-ajax-p nil)
+        (file 
+          :present-as input 
+          :parse-as (float))))))
+
 (define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Navigation sample" #'navigation-demonstration-action)
+(define-demo-action "Input sample with float parser" #'float-input-field-demonstration-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)

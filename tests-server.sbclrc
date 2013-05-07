@@ -4,7 +4,7 @@
 (setf sb-impl::*default-external-format* :utf-8)
 (defvar *port* (parse-integer (nth 1 *posix-argv*)))
 (defvar *swank-port* (parse-integer (nth 2 *posix-argv*)))
-(load ".quicklisp/setup.lisp")
+
 (ql:quickload :cl-ppcre)
 (ql:quickload :weblocks-selenium-tests-app)
 (ql:quickload :weblocks-selenium-tests)
