@@ -1,6 +1,8 @@
 
 (defpackage #:weblocks-selenium-tests-app
   (:use :cl :weblocks
+        :weblocks-stores
+        :weblocks-util
         :f-underscore :anaphora)
   (:import-from :hunchentoot #:header-in
 		#:set-cookie #:set-cookie* #:cookie-in
