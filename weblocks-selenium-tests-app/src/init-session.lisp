@@ -31,6 +31,30 @@
                                                  "Close dialog")))))
     (do-dialog "Dialog title" widget)))
 
+(defstore *tests-store* :memory)
+
+(defclass test-model ()
+  ((id) 
+   (title :accessor test-model-title :initarg :title) 
+   (content :accessor test-model-content :initarg :content)))
+
+(defun gridedit-demonstration-action (&rest args)
+  (let* ((widget)
+         (composite))
+    (setf widget (make-instance 'gridedit :data-class 'test-model))
+    (setf composite (make-instance 'composite 
+                                   :widgets (list 
+                                              (lambda (&rest args)
+                                                (with-html 
+                                                  (:h1 "Gridedit")))
+                                              widget 
+                                              (lambda (&rest args)
+                                                (render-link 
+                                                  (lambda (&rest args)
+                                                    (answer composite t))
+                                                  "Back")))))
+    (do-page composite)))
+
 (defun navigation-demonstration-action (&rest args)
   (let ((widget)
         (navigation))
@@ -91,6 +115,7 @@
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Navigation sample" #'navigation-demonstration-action)
 (define-demo-action "Input sample with float parser" #'float-input-field-demonstration-action)
+(define-demo-action "Gridedit" #'gridedit-demonstration-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)
