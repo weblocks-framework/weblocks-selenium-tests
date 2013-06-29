@@ -10,5 +10,6 @@
     :with-new-or-existing-selenium-session 
     :with-new-or-existing-selenium-session-on-jquery-site 
     :require-firefox 
-    :require-google-chrome))
+    :require-google-chrome 
+    :do-screen-state-test))
 

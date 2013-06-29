@@ -49,3 +49,37 @@
                                             window.jQuery.noConflict();
                                             }); " *site-root-url*)))
   (sleep 1))
+
+(defun md5-sum (file-name)
+  (ironclad:byte-array-to-hex-string 
+    (ironclad:digest-file 
+      :md5 file-name)))
+
+(defun images-different-p (file-1 file-2)
+  (string/= (md5-sum file-1) (md5-sum file-2)))
+
+(defun do-screen-state-test (file-name)
+  (unless *do-screen-state-tests* 
+    (return-from do-screen-state-test))
+  (let* ((parts (reverse (ppcre:split "/" file-name)))
+         (temporary-file-name 
+           (merge-pathnames 
+             (make-pathname 
+               :name (car parts) 
+               :type "png")
+             *screen-state-tests-temp-dir*))
+         (path (merge-pathnames 
+                 (make-pathname 
+                   :name (car parts)
+                   :directory (list* :relative (reverse (cdr parts)))
+                   :type "png")
+                 *screen-state-tests-dir*)))
+    (require-firefox 
+      (do-get-eval "window.resizeTo(1350, 768);")
+      (ensure-directories-exist path)
+      (ensure-directories-exist temporary-file-name)
+      (cond 
+        ((not (probe-file path)) (do-capture-entire-page-screenshot (princ-to-string path) ""))
+        ((probe-file path)
+         (do-capture-entire-page-screenshot (princ-to-string temporary-file-name) "")
+         (eval `(is (not (images-different-p ,path ,temporary-file-name)))))))))
