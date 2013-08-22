@@ -58,7 +58,7 @@
 (defun images-different-p (file-1 file-2)
   (string/= (md5-sum file-1) (md5-sum file-2)))
 
-(defun do-screen-state-test (file-name)
+(defun do-screen-state-test (file-name &key wait-after-resize)
   (unless *do-screen-state-tests* 
     (return-from do-screen-state-test))
   (let* ((parts (reverse (ppcre:split "/" file-name)))
@@ -76,6 +76,8 @@
                  *screen-state-tests-dir*)))
     (require-firefox 
       (do-get-eval "window.resizeTo(1350, 768);")
+      (when wait-after-resize 
+        (do-wait-for-page-to-load wait-after-resize))
       (ensure-directories-exist path)
       (ensure-directories-exist temporary-file-name)
       (cond 
