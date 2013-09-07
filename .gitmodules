@@ -1,9 +1,3 @@
-[submodule "weblocks-jquery"]
-	path = weblocks-jquery
-	url = git://github.com/html/weblocks-jquery.git
-[submodule "jquery-seq"]
-	path = jquery-seq
-	url = git://github.com/html/jquery-seq.git
 [submodule "jquery-bbq"]
 	path = jquery-bbq
 	url = git://github.com/cowboy/jquery-bbq.git
