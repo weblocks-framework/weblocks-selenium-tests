@@ -1,4 +1,6 @@
+(load "asdf.lisp")
 (load ".quicklisp-install/require-quicklisp.lisp")
+(push (make-pathname :directory '(:relative ".")) ql:*local-project-directories*)
 (push (make-pathname :directory '(:relative "weblocks-selenium-tests-app")) asdf:*central-registry*)
 (require :sb-posix)
 (setf sb-impl::*default-external-format* :utf-8)
