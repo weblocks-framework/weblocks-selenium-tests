@@ -4,8 +4,8 @@
 
 These are 
 
-    * tests for different weblocks components
-    * environment for testing external (own) components/widgets.
+* tests for different weblocks components
+* environment for testing external (own) components/widgets.
 
 
 ## Usage 
@@ -39,10 +39,10 @@ You can use both applications for rendering and testing your own weblocks widget
 To add your own tests for your widgets using weblocks-selenium-tests environment you
 need 4 things.
 
-    * define page(s) containing demo of widget.
-    * start tests server with your test package included.
-    * define test suite(s) for your package
-    * define tests inside your test suite(s)
+* define page(s) containing demo of widget.
+* start tests server with your test package included.
+* define test suite(s) for your package
+* define tests inside your test suite(s)
 
 ### Defining page
 
