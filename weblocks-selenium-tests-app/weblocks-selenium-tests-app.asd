@@ -11,7 +11,7 @@
     :author "Olexiy Zamkoviy"
     :licence "LLGPL"
     :description "App which demonstrates weblocks components and is used for weblocks selenium tests"
-    :depends-on (:weblocks)
+    :depends-on (:weblocks :weblocks-utils)
     :components ((:file "weblocks-selenium-tests-app")
 		 (:module conf
 		  :components ((:file "stores"))

@@ -99,6 +99,13 @@
   "Used to add action to demo list, 
    :prototype-engine-p and :jquery-engine-p keys 
    are responsive for displaying action in one or both demo applications"
+  (setf *demo-actions* 
+        (remove-if 
+          (lambda (item)
+            (or 
+              (string= (first item) link-name)
+              (equal (second item) action)))
+          *demo-actions*))
   (push (list link-name action prototype-engine-p jquery-engine-p) *demo-actions*))
 
 (defun float-input-field-demonstration-action (&rest args)
@@ -129,6 +136,13 @@
                           (cl-who:htm (:li (render-link action link-title))))))))))
 
 (defun init-user-session-jquery (root)
+  (weblocks-utils:require-assets 
+    "https://raw.github.com/html/weblocks-assets/master/weblocks-jquery/0.1.4/")
+  (weblocks-utils:require-assets 
+    "https://raw.github.com/html/weblocks-assets/master/jquery-seq/0.0.3/") 
+  (weblocks-utils:require-assets 
+    "https://raw.github.com/html/weblocks-assets/master/jquery/1.8.2/")
+
   (setf (widget-children root)
         (list (lambda (&rest args)
                 (with-html

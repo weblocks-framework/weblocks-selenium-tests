@@ -33,12 +33,12 @@
            :ignore-default-dependencies t ;; accept the defaults
            :debug t
            :dependencies (list 
-                           (make-instance 'script-dependency :url "/pub/scripts/jquery-1.8.2.js")
-                           (make-instance 'stylesheet-dependency :url "/pub/stylesheets/main.css")
-                           (make-instance 'stylesheet-dependency :url "/pub/stylesheets/layout.css")
-                           (make-instance 'script-dependency :url "/pub/scripts/weblocks-jquery.js")
-                           (make-instance 'script-dependency :url "/pub/scripts/dialog-jquery.js")
-                           (make-instance 'script-dependency :url "/pub/scripts/jquery-seq.js")))
+                           (make-instance 'script-dependency :url "/jquery/pub/scripts/jquery-1.8.2.js")
+                           (make-instance 'stylesheet-dependency :url "/jquery/pub/stylesheets/main.css")
+                           (make-instance 'stylesheet-dependency :url "/jquery/pub/stylesheets/layout.css")
+                           (make-instance 'script-dependency :url "/jquery/pub/scripts/weblocks-jquery.js")
+                           (make-instance 'script-dependency :url "/jquery/pub/scripts/dialog-jquery.js")
+                           (make-instance 'script-dependency :url "/jquery/pub/scripts/jquery-seq.js")))
 
 ;; Top level start & stop scripts
 
