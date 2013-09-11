@@ -118,11 +118,60 @@
           :present-as input 
           :parse-as (float))))))
 
+
+
+(defun nl2br (text)
+  (cl-ppcre:regex-replace-all #\newline text "<br/>"))
+
+(defun/cc quickform-demonstration-action (&rest args)
+  (let ((widget ))
+    (setf widget 
+          (make-quickform 
+            (defview 
+              nil 
+              (:caption "A Quickform" :type form :persistp nil)
+              (some-text  
+                :present-as input))
+            :answerp nil
+            :on-success (lambda (form data)
+                          (let ((display-results-widget))
+                            (setf  display-results-widget 
+                                   (make-widget 
+                                     (lambda/cc (&rest args)
+                                       (with-html 
+                                         (:h1 "And quickform returned following data for us (output via "
+                                          (:a :href "http://www.lispworks.com/documentation/HyperSpec/Body/f_descri.htm"
+                                           :target "_blank"
+                                           "describe")
+                                          ")")
+                                         (:pre
+                                           (str 
+                                             (ppcre:regex-replace-all 
+                                               #\Space
+                                               (nl2br 
+                                                 (with-output-to-string (s)
+                                                   (describe data s)))
+                                               "&nbsp;")))
+                                         (render-link 
+                                           (lambda/cc (&rest args)
+                                             (answer display-results-widget nil))
+                                           "Enter another value")
+                                         "&nbsp;"
+                                         (render-link 
+                                           (lambda/cc (&rest args)
+                                             (answer widget nil))
+                                           "Back to list of examples")))))
+                            (do-page display-results-widget)))
+            :on-cancel (lambda (&rest args)
+                         (answer widget))))
+    (do-page widget)))
+
 (define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Navigation sample" #'navigation-demonstration-action)
 (define-demo-action "Input sample with float parser" #'float-input-field-demonstration-action)
 (define-demo-action "Gridedit" #'gridedit-demonstration-action)
+(define-demo-action "Quickform" #'quickform-demonstration-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)

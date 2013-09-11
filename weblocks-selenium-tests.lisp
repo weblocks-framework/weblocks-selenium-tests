@@ -81,3 +81,10 @@
               (ps:chain 
                 (window.j-query "#second-level-nav-2 li:first")
                 (has-class "selected-item"))))))))
+
+(deftest gets-quickform-answer ()
+  (with-new-or-existing-selenium-session 
+    (do-click-and-wait "link=Quickform")
+    (do-type "name=some-text" "Test text")
+    (do-click-and-wait "name=submit")
+    (is (not (null (ppcre:scan "Test text" (do-get-text "css=pre")))))))
