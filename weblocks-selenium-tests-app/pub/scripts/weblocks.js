@@ -5,7 +5,23 @@ function updateElementBody(element, newBody) {
 }
 
 function updateElement(element, newElement) {
-    element.replace(newElement);
+  var parent = element.parentNode;
+  parent.replaceChild(newElement[0], element);
+
+  if(element.next()){
+    var next = element.next();
+    var insertMethod =  function(newEl){
+      parent.insertBefore(newEl, next);
+    };
+  }else{
+    var insertMethod = function(newEl){
+      parent.appendChild(newEl);
+    };
+  }
+
+  for(var i=1;i < newElement.length - 1;i++){
+    insertMethod(newElement[i]);
+  }
 }
 
 function selectionEmpty() {
@@ -40,7 +56,7 @@ function stopPropagation(event) {
 // Register global AJAX handlers to show progress
 Ajax.Responders.register({
   onCreate: function() {
-	    $('ajax-progress').innerHTML = "<img src='pub/images/progress.gif'>";
+	    $('ajax-progress').innerHTML = "<img src='/pub/images/progress.gif'>";
 	},
   onComplete: function() {
 	    $('ajax-progress').innerHTML = "";
@@ -65,12 +81,27 @@ function onActionSuccess(transport) {
 
     // Update dirty widgets
     var dirtyWidgets = json['widgets'];
+    var minTopOffset = document.documentElement.getHeight();
+
     for(var i in dirtyWidgets) {
 	var widget = $(i);
 	if(widget) {
             //console.log("updating widget %s", i);
-	    updateElement(widget, dirtyWidgets[i]);
+	  var el = (new Element('div')).update(dirtyWidgets[i]).childElements();
+	  updateElement(widget, el);
+
+	  el.each(function(th){
+	    var offsetTop = th.cumulativeOffset().top;
+	    if(offsetTop < minTopOffset){
+	      minTopOffset = offsetTop;
+	    }
+	  });
 	}
+    }
+    
+    // Scroll top if some of updated elements is above area viewed by user
+    if(minTopOffset < window.scrollY){
+      new Effect.ScrollTo(document, { duration:0.2 });
     }
 
     execJsonCalls(json['on-load']);
@@ -88,6 +119,10 @@ function execJsonCalls (calls) {
                              }
 			 });
     }
+}
+
+function onActionFailure() {
+    alert('Oops, we could not complete your request because of an internal error.');
 }
 
 function getActionUrl(actionCode, sessionString, isPure) {
@@ -278,9 +313,3 @@ function updateWidgetStateFromHash() {
     initiateActionWithArgs(null, null, {'weblocks-internal-location-hash':hash}, "GET", "/");
 }
 
-function onActionFailure(transport) {
-    document.body.innerHTML=
-	'<div style="text-align: left">' +
-	transport.responseText
-	+ '</div>';
-}

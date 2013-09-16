@@ -166,12 +166,28 @@
                          (answer widget))))
     (do-page widget)))
 
+(defun/cc a-long-page-action (&rest args)
+          (let ((widget ))
+            (setf widget 
+                  (make-widget (lambda (&rest args)
+                                 (let ((text  "This should be a long page for testing Weblocks behaviour on getting back to short page. It should scroll top."))
+                                   (with-html 
+                                     (loop for i across text do 
+                                           (cl-who:htm 
+                                             (str i)
+                                             (:br)))
+                                     (:br)
+                                     (render-link (lambda (&rest args)
+                                                    (answer widget)) "back"))))))
+            (do-page widget)))
+
 (define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Navigation sample" #'navigation-demonstration-action)
 (define-demo-action "Input sample with float parser" #'float-input-field-demonstration-action)
 (define-demo-action "Gridedit" #'gridedit-demonstration-action)
 (define-demo-action "Quickform" #'quickform-demonstration-action)
+(define-demo-action "A long page for test" #'a-long-page-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)

@@ -88,3 +88,14 @@
     (do-type "name=some-text" "Test text")
     (do-click-and-wait "name=submit")
     (is (not (null (ppcre:scan "Test text" (do-get-text "css=pre")))))))
+
+;;--- TODO: add similar test for jquery backend
+(deftest scrolls-top-when-going-from-long-page-to-short ()
+  (with-new-or-existing-selenium-session 
+    (do-click-and-wait "link=A long page for test")
+    
+    ;; Scrolling bottom
+    (do-get-eval "selenium.browserbot.getCurrentWindow().scrollTo(0, 1500)")
+
+    (do-click-and-wait "link=back")
+    (is (string= "0" (do-get-eval "window.scrollY")))))
