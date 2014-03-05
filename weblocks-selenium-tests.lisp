@@ -99,3 +99,16 @@
 
     (do-click-and-wait "link=back")
     (is (string= "0" (do-get-eval "window.scrollY")))))
+
+(deftest shows-flash-on-different-redirect-examples ()
+  (with-new-or-existing-selenium-session 
+    (do-click-and-wait "link=Flash demo")
+
+    (loop for i in (list "Show test flash message through ajax, after no redirect" 
+                         "Show test flash message after no redirect"
+                         "Show test flash message after single redirect"
+                         "Show test flash message through ajax, after single redirect"
+                         "Show test flash message after double redirect"
+                         "Show test flash message through ajax after double redirect") do 
+          (do-click-and-wait (format nil "link=~A" i))
+          (is (ppcre:scan "Test message" (do-get-text "css=ul.messages"))))))

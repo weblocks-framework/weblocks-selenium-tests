@@ -106,6 +106,9 @@
               (string= (first item) link-name)
               (equal (second item) action)))
           *demo-actions*))
+
+  (setf *demo-actions* 
+        (remove (find action *demo-actions*) *demo-actions*))
   (push (list link-name action prototype-engine-p jquery-engine-p) *demo-actions*))
 
 (defun float-input-field-demonstration-action (&rest args)
@@ -181,6 +184,86 @@
                                                     (answer widget)) "back"))))))
             (do-page widget)))
 
+(defun/cc flash-tests-action (&rest args)
+  (let ((flash (make-instance 'flash)))
+    (do-page 
+      (make-instance 
+        'composite 
+        :widgets 
+        (list 
+          (lambda (&rest args)
+            (mark-dirty flash))
+          flash 
+              (make-widget 
+                (let ((lambda2))
+                  (setf lambda2 (lambda (&rest args)
+                                  (with-html 
+                                    (:h1 "A flash widget")
+                                    (:ul 
+                                      (:li (:a :href "javascript:;"
+                                            :onclick (ps:ps-inline 
+                                                       (initiate-action 
+                                                         (ps:LISP 
+                                                           (make-action 
+                                                             (lambda (&rest args)
+                                                               (flash-message flash "Test message"))))
+                                                         (ps:LISP (session-name-string-pair))))
+                                            "Show test flash message through ajax, after no redirect"))
+                                      (:li (:a :href 
+                                            (make-action-url 
+                                              (make-action 
+                                                (lambda (&rest args)
+                                                          (flash-message flash "Test message"))))
+                                            "Show test flash message after no redirect"))
+                                      (:li (:a :href 
+                                            (make-action-url 
+                                              (make-action 
+                                                (lambda (&rest args)
+                                                  (flash-message flash "Test message")
+                                                  (redirect "/?test=true" :defer nil))))
+                                            "Show test flash message after single redirect"))
+                                      (:li (:a :href "javascript:;"
+                                            :onclick (ps:ps-inline 
+                                                       (initiate-action 
+                                                         (ps:LISP 
+                                                           (make-action 
+                                                             (lambda (&rest args)
+                                                               (flash-message flash "Test message")
+                                                               (redirect "/?test=true" :defer nil))))
+                                                         (ps:LISP (session-name-string-pair))))
+                                            "Show test flash message through ajax, after single redirect"))
+                                      (:li 
+                                        (:a :href (let ((url))
+                                                    (setf url (make-action-url 
+                                                                (make-action 
+                                                                  (lambda (&rest args)
+                                                                    (cond 
+                                                                      ((weblocks-util:request-parameter "test2") 
+                                                                       (redirect (format nil "/?test3=true" url) :defer nil))
+                                                                      (t 
+                                                                       (flash-message flash "Test message")
+                                                                       (redirect (format nil "~A&test2=true" url) :defer nil))))))))
+                                         "Show test flash message after double redirect"))
+                                      (:li 
+                                        (:a :href "javascript:;"
+                                         :onclick (ps:ps-inline 
+                                                    (initiate-action 
+                                                      (ps:LISP 
+                                                        (let ((action)
+                                                              (url))
+                                                          (setf action (make-action 
+                                                                         (lambda (&rest args)
+                                                                           (cond 
+                                                                             ((weblocks-util:request-parameter "test2") 
+                                                                              (redirect (format nil "/?test3=true" url) :defer nil))
+                                                                             (t 
+                                                                              (flash-message flash "Test message")
+                                                                              (redirect (format nil "~A&test2=true" url) :defer nil))))))
+                                                          (setf url (make-action-url action))
+                                                          action))
+                                                      (ps:LISP (session-name-string-pair))))
+                                         "Show test flash message through ajax after double redirect")))))))))))))
+
 (define-demo-action "File field form presentation" #'file-field-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Dialog sample" #'dialog-demonstration-action :jquery-engine-p nil)
 (define-demo-action "Navigation sample" #'navigation-demonstration-action)
@@ -188,6 +271,7 @@
 (define-demo-action "Gridedit" #'gridedit-demonstration-action)
 (define-demo-action "Quickform" #'quickform-demonstration-action)
 (define-demo-action "A long page for test" #'a-long-page-action)
+(define-demo-action "Flash demo" #'flash-tests-action)
 
 ;; Define callback function to initialize new sessions
 (defun init-user-session-prototype (root)
