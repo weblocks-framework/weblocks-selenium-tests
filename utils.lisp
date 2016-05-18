@@ -35,6 +35,7 @@
 
 (defun ensure-jquery-loaded-into-document ()
   (do-get-eval 
+    ; Here we take jQuery library for jQuery backend test app
     (remove #\Newline (format nil "
                               function addJavascript(jsname,pos, callback){
                               var th = window.document.getElementsByTagName(pos)[0];
@@ -44,10 +45,12 @@
                               s.onload = callback; 
                               th.appendChild(s);
                               }
+                              // This is to initiate jQuery app
+                              //window.open('~Ajquery').close();
 
-                              addJavascript('~Apub/scripts/jquery-1.8.2.js', 'body', function(){
+                              addJavascript('~Ajquery/pub/scripts/jquery-1.8.2.js', 'body', function(){
                                             window.jQuery.noConflict();
-                                            }); " *site-root-url*)))
+                                            }); " *site-root-url* *site-root-url*)))
   (sleep 1))
 
 (defun md5-sum (file-name)

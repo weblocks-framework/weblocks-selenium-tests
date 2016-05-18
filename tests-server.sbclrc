@@ -20,7 +20,7 @@
  (ql:quickload :linedit)
  (funcall (intern "INSTALL-REPL" :linedit) :wrap-current t))
 
-(swank:create-server :dont-close t)
+(swank:create-server :dont-close t :port *swank-port*)
 
 (format t "~C[2J~%" #\Esc)
 
@@ -31,4 +31,4 @@
 (format t "Use (quit) to exit REPL")
 
 (in-package :weblocks-selenium-tests)
-(defun quit () (sb-ext:quit))
+(defun quit () (sb-ext:exit))

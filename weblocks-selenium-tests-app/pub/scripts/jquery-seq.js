@@ -1,1 +1,0 @@
-../../../jquery-seq/jquery-seq.js

@@ -21,6 +21,7 @@
     :prefix "/"
     :description "Weblocks with prototype demo"
     :init-user-session 'weblocks-selenium-tests-app::init-user-session-prototype
+    :js-backend :prototype
     :autostart nil                   ;; have to start the app manually
     :ignore-default-dependencies nil ;; accept the defaults
     :debug t)
@@ -29,6 +30,7 @@
            :prefix "/jquery"
            :description "Weblocks with jquery demo"
            :init-user-session 'weblocks-selenium-tests-app::init-user-session-jquery
+           :js-backend :jquery
            :autostart nil                   ;; have to start the app manually
            :ignore-default-dependencies t ;; accept the defaults
            :debug t
